@@ -40,18 +40,8 @@ include $(BUILD_STATIC_LIBRARY)
 
 # set correct hal library path
 # ============================================================
-LIB_WIFI_HAL := libwifi-hal
-
-ifeq ($(BOARD_WLAN_DEVICE), bcmdhd)
-  LIB_WIFI_HAL := libwifi-hal-bcm
-else ifeq ($(BOARD_WLAN_DEVICE), qcwcn)
-  # this is commented because none of the nexus devices
-  # that sport Qualcomm's wifi have support for HAL
-  # LIB_WIFI_HAL := libwifi-hal-qcom
-else ifeq ($(BOARD_WLAN_DEVICE), mrvl)
-  # this is commented because none of the nexus devices
-  # that sport Marvell's wifi have support for HAL
-  # LIB_WIFI_HAL := libwifi-hal-mrvl
+ifeq ($(LIB_WIFI_HAL),)
+  LIB_WIFI_HAL := libwifi-hal
 endif
 
 # Build the HalUtil
