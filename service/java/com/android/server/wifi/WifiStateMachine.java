@@ -6077,7 +6077,8 @@ public class WifiStateMachine extends StateMachine {
                                 // Interpret this as a connect attempt
                                 // Set the last selected configuration so as to allow the system to
                                 // stick the last user choice without persisting the choice
-                                mWifiConfigStore.setLastSelectedConfiguration(res);
+                                //mWifiConfigStore.setLastSelectedConfiguration(res);
+                                mWifiConfigStore.setLastSelectedConfiguration(WifiConfiguration.INVALID_NETWORK_ID);
 
                                 // Remember time of last connection attempt
                                 lastConnectAttempt = System.currentTimeMillis();
@@ -6107,7 +6108,8 @@ public class WifiStateMachine extends StateMachine {
                                 updateConfigurationHistory(message.arg1, true, false);
                         // Set the last selected configuration so as to allow the system to
                         // stick the last user choice without persisting the choice
-                        mWifiConfigStore.setLastSelectedConfiguration(message.arg1);
+                        //mWifiConfigStore.setLastSelectedConfiguration(message.arg1);
+                        mWifiConfigStore.setLastSelectedConfiguration(WifiConfiguration.INVALID_NETWORK_ID);
 
                         // Remember time of last connection attempt
                         lastConnectAttempt = System.currentTimeMillis();
@@ -6347,6 +6349,7 @@ public class WifiStateMachine extends StateMachine {
                     /* Tell autojoin the user did try to connect to that network */
                     mWifiAutoJoinController.updateConfigurationHistory(netId, true, true);
 
+                    //mWifiConfigStore.setLastSelectedConfiguration(netId);
                     mWifiConfigStore.setLastSelectedConfiguration(WifiConfiguration.INVALID_NETWORK_ID);
 
                     didDisconnect = false;
