@@ -4582,7 +4582,7 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
         // unifying it under LinkProperties.compareProvisioning().
         final boolean lostProvisioning =
                 (wasProvisioned && !isProvisioned) ||
-                (mLinkProperties.hasIPv4Address() && !newLp.hasIPv4Address()) ||
+                (mLinkProperties.isIPv4Provisioned() && !newLp.isIPv4Provisioned()) ||
                 (mLinkProperties.isIPv6Provisioned() && !newLp.isIPv6Provisioned());
         final DetailedState detailedState = getNetworkDetailedState();
 
