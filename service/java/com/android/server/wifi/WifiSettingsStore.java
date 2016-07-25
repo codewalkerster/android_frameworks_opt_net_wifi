@@ -37,6 +37,7 @@ final class WifiSettingsStore {
     private int mPersistWifiState = WIFI_DISABLED;
     /* Tracks current airplane mode state */
     private boolean mAirplaneModeOn = false;
+
     /* Tracks the setting of scan being available even when wi-fi is turned off
      */
     private boolean mScanAlwaysAvailable;
@@ -53,18 +54,12 @@ final class WifiSettingsStore {
         mScanAlwaysAvailable = getPersistedScanAlwaysAvailable();
     }
 
-    synchronized void enableReadSavedStateAgain() {
-        mCheckSavedStateAtBoot = false;
-    }
-
     synchronized boolean isWifiToggleEnabled() {
         if (!mCheckSavedStateAtBoot) {
             mCheckSavedStateAtBoot = true;
             if (testAndClearWifiSavedState()) return true;
         }
 
-        mAirplaneModeOn=isAirplaneModeOn();
-        mPersistWifiState=getPersistedWifiState();
         if (mAirplaneModeOn) {
             return mPersistWifiState == WIFI_ENABLED_AIRPLANE_OVERRIDE;
         } else {
