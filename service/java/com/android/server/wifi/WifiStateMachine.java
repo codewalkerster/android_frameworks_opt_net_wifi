@@ -1529,6 +1529,8 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
 
     private AtomicInteger mDelayedScanCounter = new AtomicInteger();
 
+    private boolean mFirtScanAlarm = true;
+
     private void setScanAlarm(boolean enabled) {
         if (PDBG) {
             String state;
@@ -1552,6 +1554,13 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
                     System.currentTimeMillis() + mDefaultFrameworkScanIntervalMs,
                     mScanIntent);
             mAlarmEnabled = true;
+            if (mFirtScanAlarm) {
+                mAlarmManager.set(AlarmManager.RTC_WAKEUP,
+                        System.currentTimeMillis() + 10000,
+                        mScanIntent);
+                mFirtScanAlarm = false;
+                Log.e(TAG, "setScanAlarm after 10 sec.");
+            }
         } else {
             mAlarmManager.cancel(mScanIntent);
             mAlarmEnabled = false;
