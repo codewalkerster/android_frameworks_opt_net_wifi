@@ -1556,10 +1556,10 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
             mAlarmEnabled = true;
             if (mFirtScanAlarm) {
                 mAlarmManager.set(AlarmManager.RTC_WAKEUP,
-                        System.currentTimeMillis() + 10000,
+                        System.currentTimeMillis() + 3000,
                         mScanIntent);
                 mFirtScanAlarm = false;
-                Log.e(TAG, "setScanAlarm after 10 sec.");
+                Log.e(TAG, "setScanAlarm after 3 sec.");
             }
         } else {
             mAlarmManager.cancel(mScanIntent);
