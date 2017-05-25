@@ -59,6 +59,7 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.UserHandle;
+import android.os.SystemProperties;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Slog;
@@ -2752,12 +2753,21 @@ public class WifiP2pServiceImpl extends IWifiP2pManager.Stub {
         mWifiP2pInfo.groupFormed = true;
         mWifiP2pInfo.isGroupOwner = mGroup.isGroupOwner();
         mWifiP2pInfo.groupOwnerAddress = serverInetAddress;
+        if (!mGroup.isGroupOwner()) {
+            SystemProperties.set("dhcp.p2p.result", "ok");
+            StringBuffer sbuf = new StringBuffer();
+            sbuf.append(serverInetAddress);
+            logd("server Inetaddr:" + sbuf.toString().substring(1)); //skip '/'
+            SystemProperties.set("dhcp.p2p.server", sbuf.toString().substring(1));
+        }
     }
 
     private void resetWifiP2pInfo() {
         mWifiP2pInfo.groupFormed = false;
         mWifiP2pInfo.isGroupOwner = false;
         mWifiP2pInfo.groupOwnerAddress = null;
+        SystemProperties.set("dhcp.p2p.result", "");
+        SystemProperties.set("dhcp.p2p.server", "");
     }
 
     private String getDeviceName(String deviceAddress) {
