@@ -154,7 +154,7 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiRss
     @VisibleForTesting public static final short NUM_LOG_RECS_NORMAL = 100;
     @VisibleForTesting public static final short NUM_LOG_RECS_VERBOSE_LOW_MEMORY = 200;
     @VisibleForTesting public static final short NUM_LOG_RECS_VERBOSE = 3000;
-    private static boolean DBG = false;
+    private static boolean DBG = true;
     private static boolean USE_PAUSE_SCANS = false;
     private static final String TAG = "WifiStateMachine";
 
@@ -4531,7 +4531,7 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiRss
             mWifiNative.setDfsFlag(true);
 
             setRandomMacOui();
-            mWifiNative.enableAutoConnect(false);
+            mWifiNative.enableAutoConnect(true);
             mCountryCode.setReadyForChange(true);
         }
 
