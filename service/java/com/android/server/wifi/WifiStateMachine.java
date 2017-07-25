@@ -4342,14 +4342,6 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiRss
                 case CMD_START_SUPPLICANT:
                     if (mWifiNative.loadDriver()) {
                         try {
-                            mNwService.wifiFirmwareReload(mInterfaceName, "STA");
-                        } catch (Exception e) {
-                            loge("Failed to reload STA firmware " + e);
-                            setWifiState(WifiManager.WIFI_STATE_UNKNOWN);
-                            return HANDLED;
-                        }
-
-                        try {
                             // A runtime crash can leave the interface up and
                             // IP addresses configured, and this affects
                             // connectivity when supplicant starts up.
