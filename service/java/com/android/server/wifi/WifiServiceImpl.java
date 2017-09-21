@@ -416,16 +416,13 @@ public class WifiServiceImpl extends IWifiManager.Stub {
 
         // If we are already disabled (could be due to airplane mode), avoid changing persist
         // state here
-	int wifiap_on =  Settings.Global.getInt(mContext.getContentResolver(), Settings.Global.WIFIAP_ON, 0);
-	if(wifiap_on == 1) {
-		setWifiApEnabled(getWifiApConfiguration(),true);
-	} else if (wifiEnabled) {
+        if (wifiEnabled) {
             try {
                 setWifiEnabled(mContext.getPackageName(), wifiEnabled);
             } catch (RemoteException e) {
                 /* ignore - local call */
             }
-	}
+        }
     }
 
     public void handleUserSwitch(int userId) {
@@ -590,14 +587,14 @@ public class WifiServiceImpl extends IWifiManager.Stub {
             if (enable) {
                 if (wiFiEnabledState == WifiManager.WIFI_STATE_DISABLING
                         || wiFiEnabledState == WifiManager.WIFI_STATE_DISABLED) {
-                    if (startConsentUiIfNeeded(packageName, Binder.getCallingUid(),
+                    if (startConsentUi(packageName, Binder.getCallingUid(),
                             WifiManager.ACTION_REQUEST_ENABLE)) {
                         return true;
                     }
                 }
             } else if (wiFiEnabledState == WifiManager.WIFI_STATE_ENABLING
                     || wiFiEnabledState == WifiManager.WIFI_STATE_ENABLED) {
-                if (startConsentUiIfNeeded(packageName, Binder.getCallingUid(),
+                if (startConsentUi(packageName, Binder.getCallingUid(),
                         WifiManager.ACTION_REQUEST_DISABLE)) {
                     return true;
                 }
@@ -635,7 +632,6 @@ public class WifiServiceImpl extends IWifiManager.Stub {
         }
         // null wifiConfig is a meaningful input for CMD_SET_AP
         if (wifiConfig == null || isValid(wifiConfig)) {
-            Settings.Global.putInt(mContext.getContentResolver(), Settings.Global.WIFIAP_ON, enabled ? 1 : 0);
             mWifiController.obtainMessage(CMD_SET_AP, enabled ? 1 : 0, 0, wifiConfig).sendToTarget();
         } else {
             Slog.e(TAG, "Invalid WifiConfiguration");
@@ -1437,7 +1433,7 @@ public class WifiServiceImpl extends IWifiManager.Stub {
         }
     };
 
-    private boolean startConsentUiIfNeeded(String packageName,
+    private boolean startConsentUi(String packageName,
             int callingUid, String intentAction) throws RemoteException {
         if (UserHandle.getAppId(callingUid) == Process.SYSTEM_UID) {
             return false;
@@ -1453,19 +1449,16 @@ public class WifiServiceImpl extends IWifiManager.Stub {
                         + " not in uid " + callingUid);
             }
 
-            // Legacy apps in permission review mode trigger a user prompt
-            if (applicationInfo.targetSdkVersion < Build.VERSION_CODES.M) {
-                Intent intent = new Intent(intentAction);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                intent.putExtra(Intent.EXTRA_PACKAGE_NAME, packageName);
-                mContext.startActivity(intent);
-                return true;
-            }
+            // Permission review mode, trigger a user prompt
+            Intent intent = new Intent(intentAction);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            intent.putExtra(Intent.EXTRA_PACKAGE_NAME, packageName);
+            mContext.startActivity(intent);
+            return true;
         } catch (PackageManager.NameNotFoundException e) {
             throw new RemoteException(e.getMessage());
         }
-        return false;
     }
 
     /**
