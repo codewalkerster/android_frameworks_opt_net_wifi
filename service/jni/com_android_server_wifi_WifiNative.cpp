@@ -38,6 +38,7 @@
 namespace android {
 
 static jint DBG = false;
+constexpr int SAFE_NET_LOG_ID = 0x534e4554;
 
 //Please put all HAL function call here and call from the function table instead of directly call
 static wifi_hal_fn hal_fn;
@@ -826,6 +827,13 @@ static jboolean android_net_wifi_setHotlist(
         return false;
     }
 
+    if (params.num_bssid >
+            static_cast<int>(sizeof(params.ap) / sizeof(params.ap[0]))) {
+        ALOGE("setHotlist array length is too long");
+        android_errorWriteLog(SAFE_NET_LOG_ID, "31856351");
+        return false;
+    }
+
     for (int i = 0; i < params.num_bssid; i++) {
         JNIObject<jobject> objAp = helper.getObjectArrayElement(array, i);
 
@@ -940,7 +948,12 @@ static jboolean android_net_wifi_trackSignificantWifiChange(
         ALOGE("Error in accessing array");
         return false;
     }
-
+    if (params.num_bssid >
+        static_cast<int>(sizeof(params.ap) / sizeof(params.ap[0]))) {
+        ALOGE("trackSignificantWifiChange array length is too long");
+        android_errorWriteLog(SAFE_NET_LOG_ID, "37775935");
+        return false;
+    }
     ALOGD("Initialized common fields %d, %d, %d, %d", params.rssi_sample_size,
             params.lost_ap_sample_size, params.min_breaching, params.num_bssid);
 
