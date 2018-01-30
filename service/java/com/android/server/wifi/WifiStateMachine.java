@@ -154,7 +154,7 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiRss
     @VisibleForTesting public static final short NUM_LOG_RECS_NORMAL = 100;
     @VisibleForTesting public static final short NUM_LOG_RECS_VERBOSE_LOW_MEMORY = 200;
     @VisibleForTesting public static final short NUM_LOG_RECS_VERBOSE = 3000;
-    private static boolean DBG = false;
+    private static boolean DBG = true;
     private static boolean USE_PAUSE_SCANS = false;
     private static final String TAG = "WifiStateMachine";
 
@@ -4523,7 +4523,7 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiRss
             mWifiNative.setDfsFlag(true);
 
             setRandomMacOui();
-            mWifiNative.enableAutoConnect(false);
+            mWifiNative.enableAutoConnect(true);
             mCountryCode.setReadyForChange(true);
         }
 
@@ -5519,7 +5519,7 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiRss
                     // If we have COMPLETED a connection to a BSSID, start doing
                     // DNAv4/DNAv6 -style probing for on-link neighbors of
                     // interest (e.g. routers); harmless if none are configured.
-                    if (state == SupplicantState.COMPLETED) {
+                    if (isRoaming() && state == SupplicantState.COMPLETED) {
                         mIpManager.confirmConfiguration();
                     }
                     break;
