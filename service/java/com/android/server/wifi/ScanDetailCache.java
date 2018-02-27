@@ -170,7 +170,6 @@ class ScanDetailCache {
                         + " elapsed=" + now_elapsed_ms + " timestamp=" + result.timestamp
                         + " age = " + age);
                 }
-                if ((now_elapsed_ms - (result.timestamp/1000)) > age) continue;
             } else {
                 // This check the time at which we have received the scan result from supplicant
                 if ((now_ms - result.seen) > age) continue;
