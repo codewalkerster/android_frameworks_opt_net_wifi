@@ -61,7 +61,7 @@ public class WifiAutoJoinController {
     private static final boolean mStaStaSupported = false;
 
     public static int mScanResultMaximumAge = 40000; /* milliseconds unit */
-    public static int mScanResultAutoJoinAge = 200000; /* milliseconds unit */
+    public static int mScanResultAutoJoinAge = 5000; /* milliseconds unit */
 
     private String mCurrentConfigurationKey = null; //used by autojoin
 
