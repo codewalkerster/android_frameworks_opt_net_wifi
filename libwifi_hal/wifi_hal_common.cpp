@@ -398,6 +398,15 @@ int wifi_load_driver() {
   if (dir == NULL)
     return 0;
 
+  static bool first = true;
+
+  if (first) {
+      // The multi-mode USB device(0bda:1a2b) needs time
+      // to change wifi(0bda:c820) device by usb_modeswitch when system boot.
+      sleep(2);
+      first = false;
+  }
+
   struct dirent *dent;
 
   int vid, pid;
