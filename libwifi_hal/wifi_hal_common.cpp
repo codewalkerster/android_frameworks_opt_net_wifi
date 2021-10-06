@@ -50,9 +50,9 @@ static bool is_driver_loaded = false;
 static const char DRIVER_MODULE_NAME[] = WIFI_DRIVER_MODULE_NAME;
 static const char DRIVER_MODULE_TAG[] = WIFI_DRIVER_MODULE_NAME " ";
 static const char DRIVER_MODULE_PATH[] = WIFI_DRIVER_MODULE_PATH;
-static const char DRIVER_MODULE_ARG[] = WIFI_DRIVER_MODULE_ARG;
 static const char MODULE_FILE[] = "/proc/modules";
 #endif
+static const char DRIVER_MODULE_ARG[] = WIFI_DRIVER_MODULE_ARG;
 
 static int insmod(const char *filename, const char *args) {
   int ret;
