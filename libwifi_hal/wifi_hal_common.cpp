@@ -389,9 +389,9 @@ int wifi_unload_driver() {
       int count = 20; /* wait at most 10 seconds for completion */
       while (count-- > 0) {
         if (!is_wifi_driver_loaded()) break;
-        usleep(500000);
+        usleep(10000);
       }
-      usleep(500000); /* allow card removal */
+      usleep(10000); /* allow card removal */
     }
   }
   property_set(DRIVER_PROP_TAG, "");
