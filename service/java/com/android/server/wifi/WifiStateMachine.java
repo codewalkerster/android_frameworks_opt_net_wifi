@@ -3152,7 +3152,7 @@ public class WifiStateMachine extends StateMachine {
             if (mCm != null) {
                 mNetworkFactory = new WifiNetworkFactory(getHandler().getLooper(), mContext,
                         NETWORKTYPE, mNetworkCapabilitiesFilter);
-                mNetworkFactory.setScoreFilter(60);
+                mNetworkFactory.setScoreFilter(103);
                 mNetworkFactory.register();
 
                 // We can't filter untrusted network in the capabilities filter because a trusted
