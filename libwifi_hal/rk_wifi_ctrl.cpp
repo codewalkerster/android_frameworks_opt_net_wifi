@@ -137,6 +137,8 @@ static wifi_device supported_wifi_devices[] = {
 	{"RTL8189FS",	"024c:f179"},
 	{"RTL8192DU",	"0bda:8194"},
 	{"RTL8812AU",	"0bda:8812"},
+	{"RTL8812AU",	"0411:0242"},
+	{"RTL8812AU",	"0bda:0811"},
 	{"RTL8821CS",	"024c:c821"},
         {"RTL8822CU",   "0bda:c82c"},
 	{"RTL8822CS",   "024c:c822"},
