@@ -108,6 +108,9 @@ static char wifi_type[64] = {0};
 #define BES_WIFI_HAL "libwifi-hal-bes.so"
 #define AIC_WIFI_HAL "libwifi-hal-aic.so"
 
+static const char CSR_PROP_NAME[] = "persist.bluetooth.hci.csr";
+static const char LE_PROP_NAME[] = "bluetooth.core.le.vendor_capabilities.enabled";
+
 typedef struct _wifi_devices
 {
   char wifi_name[64];
@@ -158,6 +161,7 @@ static wifi_device supported_wifi_devices[] = {
 	{"BES2600",	"be57:2002"},
 	{"AIC8800",	"5449:0145"},
 	{"AIC8800",     "c8a1:0082"},
+	{"CSR8510",	"0a12:0001"},
 
 };
 
@@ -193,6 +197,7 @@ const wifi_file_name module_list[] =
 	{"SPRDWL",          SPRDWL_DRIVER_MODULE_NAME, SPRDWL_DRIVER_MODULE_PATH, UNKOWN_DRIVER_MODULE_ARG, SPRD_WIFI_HAL},
 	{"BES2600",          BES2600_DRIVER_MODULE_NAME, BES2600_DRIVER_MODULE_PATH, UNKOWN_DRIVER_MODULE_ARG, BES_WIFI_HAL},
 	{"AIC8800",          AIC8800_DRIVER_MODULE_NAME, AIC8800_DRIVER_MODULE_PATH, UNKOWN_DRIVER_MODULE_ARG, AIC_WIFI_HAL},
+	{"CSR8510", RTL8821CU_DRIVER_MODULE_NAME, RTL8821CU_DRIVER_MODULE_PATH, UNKOWN_DRIVER_MODULE_ARG, REALTEK_WIFI_HAL},
 };
 
 int get_wifi_device_id(const char *bus_dir, const char *prefix)
@@ -279,6 +284,14 @@ int check_wifi_chip_type_string(char *type)
 
 	strcpy(type, recoginze_wifi_chip);
 	PLOG(ERROR) << "check_wifi_chip_type_string : " << type;
+	//ODROID CSR
+	if (strcmp(type, "CSR8510") == 0) {
+		property_set(CSR_PROP_NAME, "true");
+		property_set(LE_PROP_NAME, "false");
+	} else {
+		property_set(CSR_PROP_NAME, "false");
+		property_set(LE_PROP_NAME, "true");
+	}
 	return 0;
 }
 

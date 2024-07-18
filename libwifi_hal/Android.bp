@@ -105,7 +105,7 @@ cc_library_shared {
     vendor: true,
     cflags: wifi_hal_cflags,
     local_include_dirs: ["include"],
-    shared_libs: ["libbase"],
+    shared_libs: ["libbase","libcutils"],
     header_libs: ["libcutils_headers"],
     srcs: ["rk_wifi_ctrl.cpp"],
 }
@@ -115,7 +115,7 @@ cc_library_static {
     cflags: wifi_hal_cflags,
     local_include_dirs: ["include"],
     export_include_dirs: ["include"],
-    shared_libs: ["libbase"],
+    shared_libs: ["libbase","libcutils"],
     header_libs: ["libcutils_headers"],
     srcs: ["rk_wifi_ctrl.cpp"],
 }
