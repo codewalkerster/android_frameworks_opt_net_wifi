@@ -35,6 +35,7 @@ extern "C" int delete_module(const char *, unsigned int);
 #define AIC8800_BSP_DRIVER_MODULE_PATH   WIFI_MODULE_PATH"aic8800_bsp.ko"
 #define MVL_DRIVER_MODULE_NAME           "sd8xxx"
 #define BCM_DRIVER_MODULE_NAME           "bcmdhd"
+#define MEDIATEK_DRIVER_MODULE_NAME           "mt"
 #define AIC8800_DRIVER_MODULE_NAME	 "aic8800"
 
 #ifndef WIFI_DRIVER_FW_PATH_STA
@@ -292,6 +293,13 @@ int wifi_load_driver() {
 		insmod(AIC8800_BSP_DRIVER_MODULE_PATH, "");
 		usleep(200000);
 	}
+
+    if (strstr(wifi_ko_path, MEDIATEK_DRIVER_MODULE_NAME)) {
+        char command[128] = "modprobe -d /vendor/lib/modules ";
+        strcat(command, get_wifi_driver_name());
+        system(command);
+        return 0;
+    }
 
   if (insmod(wifi_ko_path, wifi_ko_arg) < 0) {
 	  return -1;
